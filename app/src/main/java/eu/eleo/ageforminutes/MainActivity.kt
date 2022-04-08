@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import java.text.SimpleDateFormat
 import java.util.*
@@ -30,31 +29,37 @@ class MainActivity : AppCompatActivity() {
         val year = myCalendar.get(Calendar.YEAR)
         val month = myCalendar.get(Calendar.MONTH)
         val day = myCalendar.get(Calendar.DAY_OF_MONTH)
-        DatePickerDialog(this, DatePickerDialog.OnDateSetListener {
-                view, selectedYear, selectedMonth, selectedDayOfMonth ->
-            Toast.makeText(this,
-                "Year $selectedYear, ${selectedMonth+1}.month, and $selectedDayOfMonth day was picked",
-                Toast.LENGTH_LONG).show()
+        val dpd = DatePickerDialog(
+            this,
+            DatePickerDialog.OnDateSetListener { _, selectYear, selectMonth, selectDayOfMonth ->
 
-            val selectDate ="$selectedDayOfMonth/${selectedMonth+1}/$selectedYear"
+                val selectDate = "$selectDayOfMonth/${selectMonth + 1}/$selectYear"
 
-            selectedDate?.text = selectDate
+                selectedDate?.text = selectDate
 
-            val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
+                val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
 
-            val date = simpleDateFormat.parse(selectDate)
+                val date = simpleDateFormat.parse(selectDate)
 
-            val selectedDateInMinutes = date.time / (60 * 1000)
-            val currentDateInMinutes = simpleDateFormat.parse(simpleDateFormat
-                .format(System.currentTimeMillis())).time / (60 * 1000)
-            val ageInMinutes = currentDateInMinutes - selectedDateInMinutes
+                date?.let {
 
-            tvAgeInMinutes?.text = ageInMinutes.toString()
-                                                                  },
+                    val selectDateInMinutes = date.time / (60 * 1000)
+                    val currentDate = simpleDateFormat.parse(
+                        simpleDateFormat
+                            .format(System.currentTimeMillis())
+                    )
+                    currentDate?.let {
+                        val currentDateInMinutes = currentDate.time / (60 * 1000)
+                        val ageInMinutes = currentDateInMinutes - selectDateInMinutes
+
+                        tvAgeInMinutes?.text = ageInMinutes.toString()
+                    }
+                }
+            },
             year,
             month,
-            day
-        ).show()
+            day)
+        dpd.datePicker.maxDate = System.currentTimeMillis() - 86400000
+        dpd.show ()
     }
 }
-
