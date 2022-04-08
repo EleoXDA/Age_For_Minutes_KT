@@ -6,6 +6,7 @@
     android:layout_gravity="center_horizontal"
     android:layout_height="match_parent"
     android:padding="11dp"
+    android:background="@color/bgColor"
     tools:context=".MainActivity">
 
     <TextView
