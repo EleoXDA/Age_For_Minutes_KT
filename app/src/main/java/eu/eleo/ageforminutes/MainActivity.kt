@@ -10,10 +10,11 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
+    //region Variables
     private var selectedDate : TextView? = null
     private var tvAgeInMinutes : TextView? = null
 
-
+    //endregion
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         tvAgeInMinutes = findViewById(R.id.tvAgeInMinutes)
         buttonDatePicker.setOnClickListener { datePicker() }
     }
-
+    //region DatePicker
     private fun datePicker() {
         val myCalendar = Calendar.getInstance()
         val year = myCalendar.get(Calendar.YEAR)
@@ -31,7 +32,8 @@ class MainActivity : AppCompatActivity() {
         val day = myCalendar.get(Calendar.DAY_OF_MONTH)
         val dpd = DatePickerDialog(
             this,
-            DatePickerDialog.OnDateSetListener { _, selectYear, selectMonth, selectDayOfMonth ->
+            // Display a date picker when the user clicks "OK"
+            { _, selectYear, selectMonth, selectDayOfMonth ->
 
                 val selectDate = "$selectDayOfMonth/${selectMonth + 1}/$selectYear"
 
